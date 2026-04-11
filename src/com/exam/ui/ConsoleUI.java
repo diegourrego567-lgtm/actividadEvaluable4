@@ -3,6 +3,10 @@ package com.exam.ui;
 import com.exam.application.ExamService;
 import com.exam.domain.model.Question;
 import com.exam.domain.vo.ValueObjects.StudentId;
+import com.exam.infrastructure.CsvQuestionBankRepository;
+import com.exam.infrastructure.InMemoryExamAttemptRepository;
+import com.exam.domain.repository.QuestionBankRepository;
+import com.exam.domain.repository.ExamAttemptRepository;
 import java.util.*;
 
 public class ConsoleUI {
@@ -24,5 +28,13 @@ public class ConsoleUI {
         }
 
         System.out.println("Puntaje: "+service.finishExam());
+    }
+
+    public static void main(String[] args) {
+        QuestionBankRepository questionRepo = new CsvQuestionBankRepository();
+        ExamAttemptRepository attemptRepo = new InMemoryExamAttemptRepository();
+        ExamService service = new ExamService(questionRepo, attemptRepo);
+        ConsoleUI ui = new ConsoleUI(service);
+        ui.start();
     }
 }
